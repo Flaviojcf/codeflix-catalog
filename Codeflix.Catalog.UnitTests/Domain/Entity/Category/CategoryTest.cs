@@ -1,4 +1,5 @@
-﻿using DomainEntity = Codeflix.Catalog.Domain.Entity;
+﻿using Codeflix.Catalog.Domain.Exceptions;
+using DomainEntity = Codeflix.Catalog.Domain.Entity;
 
 namespace Codeflix.Catalog.UnitTests.Domain.Entity.Category
 {
@@ -92,6 +93,44 @@ namespace Codeflix.Catalog.UnitTests.Domain.Entity.Category
             Assert.True(category.CreatedAt > dateTimeBefore);
             Assert.True(category.CreatedAt < dateTimeAfter);
             Assert.Equal(isActive, category.IsActive);
+        }
+
+
+        [Theory(DisplayName = nameof(InstantiateThrowErrorWhenNameIsEmpty))]
+        [Trait("Domain", "Category - Aggregates")]
+        [InlineData("")]
+        [InlineData(null)]
+        [InlineData("  ")]
+        public void InstantiateThrowErrorWhenNameIsEmpty(string? name)
+        {
+            //Arrange
+            Action action = () => new DomainEntity.Category(name!, "Category Description");
+
+
+
+            //Act
+            var exception = Assert.Throws<EntityValidationException>(action);
+
+
+            //Assert
+            Assert.Equal("Name should not be empty or null", exception.Message);
+        }
+
+        [Fact(DisplayName = nameof(InstantiateThrowErrorWhenDescriptionIsNull))]
+        [Trait("Domain", "Category - Aggregates")]
+        public void InstantiateThrowErrorWhenDescriptionIsNull()
+        {
+            //Arrange
+            Action action = () => new DomainEntity.Category("Category Name", null!);
+
+
+
+            //Act
+            var exception = Assert.Throws<EntityValidationException>(action);
+
+
+            //Assert
+            Assert.Equal("Description should not be empty or null", exception.Message);
         }
     }
 }
