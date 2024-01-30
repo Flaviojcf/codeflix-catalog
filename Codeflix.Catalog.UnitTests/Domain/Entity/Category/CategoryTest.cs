@@ -157,7 +157,7 @@ namespace Codeflix.Catalog.UnitTests.Domain.Entity.Category
         {
             //Arrange
             var validCategory = _categoryTestFixture.GetValidCategory();
-            var invalidName = String.Join(null, Enumerable.Range(1, 256).Select(_ => "a").ToArray());
+            var invalidName = string.Join(null, Enumerable.Range(1, 256).Select(_ => "a").ToArray());
 
 
             //Assert
@@ -228,15 +228,15 @@ namespace Codeflix.Catalog.UnitTests.Domain.Entity.Category
         {
             //Arrange
             var category = _categoryTestFixture.GetValidCategory();
-            var newValues = new { Name = "New Name", Description = "New Description" };
+            var categoryWithNewValues = _categoryTestFixture.GetValidCategory();
 
             //Act
-            category.Update(newValues.Name, newValues.Description);
+            category.Update(categoryWithNewValues.Name, categoryWithNewValues.Description);
 
 
             //Assert
-            category.Name.Should().Be(newValues.Name);
-            category.Description.Should().Be(newValues.Description);
+            category.Name.Should().Be(categoryWithNewValues.Name);
+            category.Description.Should().Be(categoryWithNewValues.Description);
         }
 
         [Fact(DisplayName = nameof(UpdateOnlyName))]
@@ -245,15 +245,15 @@ namespace Codeflix.Catalog.UnitTests.Domain.Entity.Category
         {
             //Arrange
             var category = _categoryTestFixture.GetValidCategory();
-            var newValues = new { Name = "New Name" };
+            var newName = _categoryTestFixture.GetValidCategoryName();
             var currentDescription = category.Description;
 
             //Act
-            category.Update(newValues.Name);
+            category.Update(newName);
 
 
             //Assert
-            category.Name.Should().Be(newValues.Name);
+            category.Name.Should().Be(newName);
             category.Description.Should().Be(currentDescription);
         }
 
@@ -299,7 +299,7 @@ namespace Codeflix.Catalog.UnitTests.Domain.Entity.Category
         {
             //Arrange
             var category = _categoryTestFixture.GetValidCategory();
-            var invalidName = String.Join(null, Enumerable.Range(1, 256).Select(_ => "a").ToArray());
+            var invalidName = _categoryTestFixture.Faker.Lorem.Letter(256);
 
             //Assert
             Action action = () => category.Update(invalidName!);
@@ -316,7 +316,7 @@ namespace Codeflix.Catalog.UnitTests.Domain.Entity.Category
         {
             //Arrange
             var category = _categoryTestFixture.GetValidCategory();
-            var invalidDescription = String.Join(null, Enumerable.Range(1, 10_001).Select(_ => "a").ToArray());
+            var invalidDescription = _categoryTestFixture.Faker.Lorem.Letter(10_001);
 
             //Assert
             Action action = () => category.Update("Category Name", invalidDescription!);
