@@ -134,9 +134,7 @@ namespace Codeflix.Catalog.UnitTests.Domain.Entity.Category
 
         [Theory(DisplayName = nameof(InstantiateThrowErrorWhenNameIsLessThan3Characters))]
         [Trait("Domain", "Category - Aggregates")]
-        [InlineData("a")]
-        [InlineData("ab")]
-        [InlineData("ac")]
+        [MemberData(nameof(GetNamesWithLessThan3Characters), parameters: 10)]
         public void InstantiateThrowErrorWhenNameIsLessThan3Characters(string? invalidName)
         {
             //Arrange
@@ -149,6 +147,17 @@ namespace Codeflix.Catalog.UnitTests.Domain.Entity.Category
 
             //Act
             action.Should().Throw<EntityValidationException>().WithMessage("Name should be at least 3 characters long");
+        }
+
+        public static IEnumerable<object[]> GetNamesWithLessThan3Characters(int numberOfTests = 6)
+        {
+            var categoryFixture = new CategoryTestFixture();
+
+            for (int i = 0; i < 6; i++)
+            {
+                var isOdd = i % 2 == 1;
+                yield return new object[] { categoryFixture.GetValidCategoryName()[..(isOdd ? 1 : 2)] };
+            };
         }
 
         [Fact(DisplayName = nameof(InstantiateThrowErrorWhenNameIsGreaterThan255Characters))]
