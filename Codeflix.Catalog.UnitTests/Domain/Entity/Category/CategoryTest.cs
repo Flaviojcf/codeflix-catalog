@@ -128,7 +128,7 @@ namespace Codeflix.Catalog.UnitTests.Domain.Entity.Category
 
 
             //Act
-            action.Should().Throw<EntityValidationException>().WithMessage("Description should not be empty or null");
+            action.Should().Throw<EntityValidationException>().WithMessage("Description should not be null");
 
         }
 
@@ -192,7 +192,7 @@ namespace Codeflix.Catalog.UnitTests.Domain.Entity.Category
 
 
             //Act
-            action.Should().Throw<EntityValidationException>().WithMessage("Description should be less or equal 10.000 characters long");
+            action.Should().Throw<EntityValidationException>().WithMessage("Description should be less or equal 10000 characters long");
         }
 
 
@@ -330,7 +330,7 @@ namespace Codeflix.Catalog.UnitTests.Domain.Entity.Category
 
 
             //Act
-            action.Should().Throw<EntityValidationException>().WithMessage("Description should be less or equal 10.000 characters long");
+            action.Should().Throw<EntityValidationException>().WithMessage("Description should be less or equal 10000 characters long");
         }
     }
 }
