@@ -31,12 +31,13 @@ namespace Codeflix.Catalog.UnitTests.Domain.Validation
         {
             //Arrange
             string? value = null;
+            string fieldName = Faker.Commerce.ProductName().Replace(" ", "");
 
             //Assert
-            Action action = () => DomainValidation.NotNull(value, "FieldName");
+            Action action = () => DomainValidation.NotNull(value, fieldName);
 
             //Act
-            action.Should().Throw<EntityValidationException>().WithMessage("FieldName should not be null");
+            action.Should().Throw<EntityValidationException>().WithMessage($"{fieldName} should not be null");
         }
 
         [Theory(DisplayName = nameof(NotNullOrEmptyThrowWhenEmpty))]
@@ -46,11 +47,15 @@ namespace Codeflix.Catalog.UnitTests.Domain.Validation
         [InlineData(" ")]
         public void NotNullOrEmptyThrowWhenEmpty(string? target)
         {
-            // Arrange & Assert
-            Action action = () => DomainValidation.NotNullOrEmpty(target, "FieldName");
+            // Arrange 
+            string fieldName = Faker.Commerce.ProductName().Replace(" ", "");
+
+
+            // Assert
+            Action action = () => DomainValidation.NotNullOrEmpty(target, fieldName);
 
             // Act
-            action.Should().Throw<EntityValidationException>().WithMessage("FieldName should not be null or empty");
+            action.Should().Throw<EntityValidationException>().WithMessage($"{fieldName} should not be null or empty");
         }
 
         [Fact(DisplayName = nameof(NotNullOrEmptyOk))]
@@ -59,9 +64,10 @@ namespace Codeflix.Catalog.UnitTests.Domain.Validation
         {
             //Arrange
             var target = Faker.Commerce.ProductName();
+            string fieldName = Faker.Commerce.ProductName().Replace(" ", "");
 
             //Assert
-            Action action = () => DomainValidation.NotNullOrEmpty(target, "FieldName");
+            Action action = () => DomainValidation.NotNullOrEmpty(target, fieldName);
 
             // Act
             action.Should().NotThrow<EntityValidationException>();
@@ -73,12 +79,15 @@ namespace Codeflix.Catalog.UnitTests.Domain.Validation
         [MemberData(nameof(GetValuesSmallerThanMin), parameters: 10)]
         public void MinLengthThrowWhenLess(string? target, int minLength)
         {
+            // Arrange 
+            string fieldName = Faker.Commerce.ProductName().Replace(" ", "");
+
             //Assert
-            Action action = () => DomainValidation.MinLength(target!, minLength, "FieldName");
+            Action action = () => DomainValidation.MinLength(target!, minLength, fieldName);
 
 
             //Act
-            action.Should().Throw<EntityValidationException>().WithMessage($"FieldName should not be less than {minLength} characters long");
+            action.Should().Throw<EntityValidationException>().WithMessage($"{fieldName} should not be less than {minLength} characters long");
         }
 
         public static IEnumerable<object[]> GetValuesSmallerThanMin(int numberOfTests = 6)
@@ -99,8 +108,13 @@ namespace Codeflix.Catalog.UnitTests.Domain.Validation
         [MemberData(nameof(GetValuesGreaterThanMin), parameters: 10)]
         public void MinLengthOk(string? target, int minLength)
         {
+
+            // Arrange 
+            string fieldName = Faker.Commerce.ProductName().Replace(" ", "");
+
+
             //Assert
-            Action action = () => DomainValidation.MinLength(target!, minLength, "FieldName");
+            Action action = () => DomainValidation.MinLength(target!, minLength, fieldName);
 
 
             //Act
@@ -126,12 +140,16 @@ namespace Codeflix.Catalog.UnitTests.Domain.Validation
         [MemberData(nameof(GetValuesGreaterThanMax), parameters: 10)]
         public void MaxLengthThrowWhenGreater(string? target, int maxLength)
         {
+
+            // Arrange 
+            string fieldName = Faker.Commerce.ProductName().Replace(" ", "");
+
             //Assert
-            Action action = () => DomainValidation.MaxLength(target!, maxLength, "FieldName");
+            Action action = () => DomainValidation.MaxLength(target!, maxLength, fieldName);
 
 
             //Act
-            action.Should().Throw<EntityValidationException>().WithMessage($"FieldName should not be greater than {maxLength} characters long");
+            action.Should().Throw<EntityValidationException>().WithMessage($"{fieldName} should not be greater than {maxLength} characters long");
         }
 
         public static IEnumerable<object[]> GetValuesGreaterThanMax(int numberOfTests = 6)
@@ -151,8 +169,12 @@ namespace Codeflix.Catalog.UnitTests.Domain.Validation
         [MemberData(nameof(GetValuesLessThanMax), parameters: 10)]
         public void MaxLengthOk(string? target, int maxLength)
         {
+            // Arrange 
+            string fieldName = Faker.Commerce.ProductName().Replace(" ", "");
+
+
             //Assert
-            Action action = () => DomainValidation.MaxLength(target!, maxLength, "FieldName");
+            Action action = () => DomainValidation.MaxLength(target!, maxLength, fieldName);
 
 
             //Act
