@@ -55,7 +55,7 @@ namespace Codeflix.Catalog.UnitTests.Domain.Validation
             Action action = () => DomainValidation.NotNullOrEmpty(target, fieldName);
 
             // Act
-            action.Should().Throw<EntityValidationException>().WithMessage($"{fieldName} should not be null or empty");
+            action.Should().Throw<EntityValidationException>().WithMessage($"{fieldName} should not be empty or null");
         }
 
         [Fact(DisplayName = nameof(NotNullOrEmptyOk))]
@@ -87,7 +87,7 @@ namespace Codeflix.Catalog.UnitTests.Domain.Validation
 
 
             //Act
-            action.Should().Throw<EntityValidationException>().WithMessage($"{fieldName} should not be less than {minLength} characters long");
+            action.Should().Throw<EntityValidationException>().WithMessage($"{fieldName} should be at least {minLength} characters long");
         }
 
         public static IEnumerable<object[]> GetValuesSmallerThanMin(int numberOfTests = 6)
@@ -149,7 +149,7 @@ namespace Codeflix.Catalog.UnitTests.Domain.Validation
 
 
             //Act
-            action.Should().Throw<EntityValidationException>().WithMessage($"{fieldName} should not be greater than {maxLength} characters long");
+            action.Should().Throw<EntityValidationException>().WithMessage($"{fieldName} should be less or equal {maxLength} characters long");
         }
 
         public static IEnumerable<object[]> GetValuesGreaterThanMax(int numberOfTests = 6)
