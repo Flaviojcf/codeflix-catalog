@@ -15,5 +15,11 @@ namespace Codeflix.Catalog.Domain.Validation
             if (string.IsNullOrWhiteSpace(target))
                 throw new EntityValidationException($"{fieldName} should not be null or empty");
         }
+
+        public static void MinLength(string target, int minLength, string fieldName)
+        {
+            if (target.Length < minLength)
+                throw new EntityValidationException($"{fieldName} should not be less than {minLength} characters long");
+        }
     }
 }

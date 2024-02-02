@@ -66,5 +66,58 @@ namespace Codeflix.Catalog.UnitTests.Domain.Validation
             // Act
             action.Should().NotThrow<EntityValidationException>();
         }
+
+
+        [Theory(DisplayName = nameof(MinLengthThrowWhenLess))]
+        [Trait("Domain", "DomainValidation - Validation")]
+        [MemberData(nameof(GetValuesSmallerThanMin), parameters: 10)]
+        public void MinLengthThrowWhenLess(string? target, int minLength)
+        {
+            //Assert
+            Action action = () => DomainValidation.MinLength(target!, minLength, "FieldName");
+
+
+            //Act
+            action.Should().Throw<EntityValidationException>().WithMessage($"FieldName should not be less than {minLength} characters long");
+        }
+
+        public static IEnumerable<object[]> GetValuesSmallerThanMin(int numberOfTests = 6)
+        {
+            var faker = new Faker();
+
+            for (int i = 0; i < numberOfTests; i++)
+            {
+                var example = faker.Commerce.ProductName();
+                var minLength = example.Length + (new Random()).Next(1, 20);
+                yield return new object[] { example, minLength };
+            };
+        }
+
+
+        [Theory(DisplayName = nameof(MinLengthOk))]
+        [Trait("Domain", "DomainValidation - Validation")]
+        [MemberData(nameof(GetValuesGreaterThanMin), parameters: 10)]
+        public void MinLengthOk(string? target, int minLength)
+        {
+            //Assert
+            Action action = () => DomainValidation.MinLength(target!, minLength, "FieldName");
+
+
+            //Act
+            action.Should().NotThrow<EntityValidationException>();
+        }
+
+
+        public static IEnumerable<object[]> GetValuesGreaterThanMin(int numberOfTests = 6)
+        {
+            var faker = new Faker();
+
+            for (int i = 0; i < numberOfTests; i++)
+            {
+                var example = faker.Commerce.ProductName();
+                var minLength = example.Length - (new Random()).Next(1, 5);
+                yield return new object[] { example, minLength };
+            };
+        }
     }
 }
