@@ -30,7 +30,7 @@ namespace Codeflix.Catalog.UnitTests.Domain.Validation
         public void NotNullThrowWhenNull()
         {
             //Arrange
-            string value = null;
+            string? value = null;
 
             //Assert
             Action action = () => DomainValidation.NotNull(value, "FieldName");
@@ -39,5 +39,32 @@ namespace Codeflix.Catalog.UnitTests.Domain.Validation
             action.Should().Throw<EntityValidationException>().WithMessage("FieldName should not be null");
         }
 
+        [Theory(DisplayName = nameof(NotNullOrEmptyThrowWhenEmpty))]
+        [Trait("Domain", "DomainValidation - Validation")]
+        [InlineData("")]
+        [InlineData(null)]
+        [InlineData(" ")]
+        public void NotNullOrEmptyThrowWhenEmpty(string? target)
+        {
+            // Arrange & Assert
+            Action action = () => DomainValidation.NotNullOrEmpty(target, "FieldName");
+
+            // Act
+            action.Should().Throw<EntityValidationException>().WithMessage("FieldName should not be null or empty");
+        }
+
+        [Fact(DisplayName = nameof(NotNullOrEmptyOk))]
+        [Trait("Domain", "DomainValidation - Validation")]
+        public void NotNullOrEmptyOk()
+        {
+            //Arrange
+            var target = Faker.Commerce.ProductName();
+
+            //Assert
+            Action action = () => DomainValidation.NotNullOrEmpty(target, "FieldName");
+
+            // Act
+            action.Should().NotThrow<EntityValidationException>();
+        }
     }
 }
